@@ -1,0 +1,204 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 27 10:33:12 2022
+
+@author: Administrator
+"""
+#For Plotting the data
+import os
+import sys
+import pyCallisto as pyc
+import pyCallisto_Utils as utils
+#import pyfits
+import astropy.io.fits as pyfits
+import matplotlib.pyplot as plt
+from datetime import datetime
+import pandas as pd
+
+
+Category = "Category_3_3"
+path = "E:/CALLISTO/Codes/"+Category+"_Data"
+
+
+
+def find(path):
+    file = []
+    for files in os.walk(path):
+        continue
+        files = find(path)
+    fit = pd.DataFrame(files[2])
+    fit[1] = fit[0].str.replace(".fit", "")
+    return fit
+        
+def simple(path):
+    fit = find(path)
+    path2 = Category+"_Plots"
+    # os.mkdir(path2)
+    for x in range (len(fit)-1):    
+        fit_path = path+"/"+fit[0][x]
+        print(x,fit[0][x])
+        #plot multiple files
+        fits1 = pyc.PyCallisto.from_file(fit_path)
+        plt = fits1.spectrogram() #this will show in imshow thing
+        plt.savefig(path2+"/"+fit[1][x]+".png")
+    return False
+    
+# simple(path)# To run this remove fits files that are below 100KBs
+
+
+def bg_sub(path):
+     fit = find(path)
+     path2 = Category + "_bg_sub_plots"
+     # os.mkdir(path2)
+     for x in range(len(fit)-1):
+         fit_path = path+"/"+fit[0][x]
+         print(x,fit[0][x])
+         fits1 = pyc.PyCallisto.from_file(fit_path)
+         background_subtracted = fits1.subtract_background()
+         plt = background_subtracted.spectrogram()
+         plt.savefig(path2+ "/"+ fit[1][x]+"_bg_sub.png")
+     return False
+    
+# bg_sub(path)
+
+
+def slice_time(file_name, begin, end, freq1,freq2):
+    
+    fit2_path = path + "/"+ file_name +".fit"
+    path2 = 'plots_for_'+ file_name
+    path3 = path2+"/"+file_name
+    # os.mkdir(path2)
+    #join time axis
+    joined1 = pyc.PyCallisto.from_file(fit2_path)
+    plt = joined1.spectrogram() #this will show in imshow thing
+    plt.savefig(path3+"_joined.png")
+    
+    #slice in frequency axis
+    freq_sliced = joined1.slice_frequency_axis(freq1, freq2)
+    plt = freq_sliced.spectrogram() #this will show in imshow thing
+    plt.savefig(path3+"_freq_sliced.png")
+    
+    
+    #slice in time axis
+    time_sliced = freq_sliced.slice_time_axis(begin, end)
+    plt = time_sliced.spectrogram() #this will show in imshow thing
+    plt.savefig(path3+"_time_sliced.png")
+    
+    
+    #do background subtraction
+    background_subtracted = time_sliced.subtract_background()
+    plt = background_subtracted.spectrogram()
+    plt.savefig(path3+"_bg_sub.png")
+    
+    return 0
+
+
+# slice_time(path+ "/SONPK_20210830_120000_57.fit")
+#            File Name                time range for slicing   frequency range for slicing
+# slice_time("SONPK_20210828_050000_57", "05:03:00", "05:08:00","50","250")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+# len(files[2])
+
+# files_os[0][0]
+# fit = pd.DataFrame(file_names.filter_by_time())
+# fit = fit.sort_index()
+# fit.drop(labels = , axis = 0, inplace = True)
+
+
+# for x in range (len(fit)-1):
+    
+#     fit_path = "Data/"+fit[4][x]
+#     print(x,fit[4][x])
+#     #plot multiple files
+#     fits1 = pyc.PyCallisto.from_file(fit_path)
+#     # plt = fits1.spectrogram() #this will show in imshow thing
+#     # plt.savefig("Plot/"+fit[5][x]+".png")
+    
+    # do background subtraction
+    # background_subtracted = fits1.subtract_background()
+    # plt = background_subtracted.spectrogram()
+    # plt.savefig("Plots_bg_sub/"+fit[5][x]+"_bg_sub.png")
+    # continue
+    
+
+# #plot multiple files
+# fits2 = pyc.PyCallisto.from_file(fits2_path)
+# plt = fits2.spectrogram() #this will show in imshow thing
+# plt.savefig("fits2.png")
+
+
+# #join time axis
+# joined1 = fits1.append_time_axis(fits2_path)
+# plt = joined1.spectrogram() #this will show in imshow thing
+# plt.savefig("joined.png")
+
+# #slice in frequency axis
+# freq_sliced = joined1.slice_frequency_axis("200", "400")
+# plt = freq_sliced.spectrogram() #this will show in imshow thing
+# plt.savefig("freq_sliced.png")
+
+#MUPK_20210909_031044_59
+
+# fits1 = pyc.PyCallisto.from_file("Data/MUPK_20210909_031044_59.fit")
+# background_subtracted = fits1.subtract_background()
+# plt = background_subtracted.spectrogram()
+# #slice in time axis
+# time_sliced = freq_sliced.slice_time_axis("03:21:00", "03:23:00")
+# plt = time_sliced.spectrogram() #this will show in imshow thing
+# plt.savefig("time_sliced.png")
+
+
+
+
+
+# # #get meanlightcurve
+# background_subtracted.mean_light_curve(out_image="mean_Light_Curve.png", grid=True)
+
+# # #get meanSpectrum
+# background_subtracted.mean_spectrum(out_image="mean_spectrum.png", grid=True)
+
+# # #get light curve at one frequency
+# background_subtracted.light_curve(300, out_image="Lightcurve.png", grid=True)
+
+
+# # #get spectrum
+# background_subtracted.spectrum( '2021/01/27','04:15:00', out_image="singletimespectrum.png", grid=True)
+
+
+
+
+
+
+
+# # fit_path = find('GAURI_20151104_034500_59.fit', 'E:\\')
+# fit_path    
+# image = CallistoSpectrogram.read(fit_path)
+# image.peek()
+
+# more = image.extend()
+# more.peek()
+
+# nobg = image.subtract_bg()
+# nobg.peek(vmin=0)
+
+
+# bg = image.auto_const_bg()
+# plt.plot(image.freq_axis, bg)
+# plt.xlabel("Frequency [MHz]")
+# plt.ylabel("Intensity")
+# plt.show()

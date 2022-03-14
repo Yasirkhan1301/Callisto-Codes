@@ -17,10 +17,10 @@ import pandas as pd
 from variables import path1, myYear, cat_in_word, category
 
 
-# Category = "Category_3_3"
-# path = "E:/CALLISTO/"+myYear+cat_in_word+Category+"_Data"
+
 path = path1 + myYear +"/"+ cat_in_word + "_Data"
 path2 = path1 + myYear + "/"+cat_in_word +"_Plots"
+
 def find(path):
     file = []
     for files in os.walk(path):

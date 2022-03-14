@@ -5,8 +5,11 @@ Created on Fri Mar 11 11:45:56 2022
 @author: Administrator
 """
 
-myYear = '2018'
-path1 = "E:/CALLISTO/"
-category = "IV/3"
-cat_in_num = "Category_4_3"
 
+from pathlib import Path
+
+myYear = '2018'
+# path1 = str(Path().resolve().parent)
+path1 = "E:/CALLISTO/"
+category = "VI/3"
+cat_in_word = "Category_6_3"

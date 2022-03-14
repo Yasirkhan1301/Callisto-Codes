@@ -6,13 +6,14 @@ Created on Tue Feb  1 10:25:58 2022
 """
 
 from ftplib_event_reader import cat_3
-from variables import myYear, path1, cat_in_num,category
+from variables import myYear, path1, cat_in_word,category
 from Filtering import fit_files
 import shutil
 import os
 
 
-path = path1+myYear+"/"+cat_in_num+"_Data"
+path = path1+myYear+"/"+cat_in_word+"_Data"
+path
 # os.mkdir(path1 + myYear) # comment this when year folder already exist
 
 def find(name, path):
@@ -23,7 +24,7 @@ def find(name, path):
 def move_files():
     
     list_1 = filter_by_time()
-    os.mkdir(path)
+    # os.mkdir(path)
     for x in range (len(list_1)-1):     
         src = find(list_1[4][x], 'E:\\')#Source Path
         dst = path +'/'+list_1[4][x]# Destination path

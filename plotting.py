@@ -14,13 +14,13 @@ import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
+from variables import path1, myYear, cat_in_word, category
 
 
-Category = "Category_3_3"
-path = "E:/CALLISTO/Codes/"+Category+"_Data"
-
-
-
+# Category = "Category_3_3"
+# path = "E:/CALLISTO/"+myYear+cat_in_word+Category+"_Data"
+path = path1 + myYear +"/"+ cat_in_word + "_Data"
+path2 = path1 + myYear + "/"+cat_in_word +"_Plots"
 def find(path):
     file = []
     for files in os.walk(path):
@@ -32,8 +32,7 @@ def find(path):
         
 def simple(path):
     fit = find(path)
-    path2 = Category+"_Plots"
-    # os.mkdir(path2)
+    os.mkdir(path2)
     for x in range (len(fit)-1):    
         fit_path = path+"/"+fit[0][x]
         print(x,fit[0][x])
@@ -47,19 +46,20 @@ def simple(path):
 
 
 def bg_sub(path):
+    
      fit = find(path)
-     path2 = Category + "_bg_sub_plots"
-     # os.mkdir(path2)
+     # path2 = Category + "_bg_sub_plots"
+     os.mkdir(path2+"_bg_sub")
      for x in range(len(fit)-1):
          fit_path = path+"/"+fit[0][x]
          print(x,fit[0][x])
          fits1 = pyc.PyCallisto.from_file(fit_path)
          background_subtracted = fits1.subtract_background()
          plt = background_subtracted.spectrogram()
-         plt.savefig(path2+ "/"+ fit[1][x]+"_bg_sub.png")
+         plt.savefig(path2+"_bg_sub"+"/"+ fit[1][x]+"_bg_sub.png")
      return False
     
-# bg_sub(path)
+bg_sub(path)
 
 
 def slice_time(file_name, begin, end, freq1,freq2):

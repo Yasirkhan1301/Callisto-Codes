@@ -17,9 +17,9 @@ import pandas as pd
 from variables import path1, myYear, cat_in_word, category
 
 
-
-path = path1 + myYear +"/"+ cat_in_word + "_Data"
-path2 = path1 + myYear + "/"+cat_in_word +"_Plots"
+slash = "/"
+path = path1 + myYear +slash+ cat_in_word + "_Data"
+path2 = path1 + myYear + slash+cat_in_word +"_Plots"
 
 def find(path):
     file = []
@@ -59,43 +59,43 @@ def bg_sub(path):
          plt.savefig(path2+"_bg_sub"+"/"+ fit[1][x]+"_bg_sub.png")
      return False
     
-bg_sub(path)
+# bg_sub(path)
 
 
 def slice_time(file_name, begin, end, freq1,freq2):
     
-    fit2_path = path + "/"+ file_name +".fit"
-    path2 = 'plots_for_'+ file_name
-    path3 = path2+"/"+file_name
-    # os.mkdir(path2)
+    fit2_path = path +slash+ file_name +".fit"
+    path2 = path1+ slash+ myYear +slash+ 'plots_for_'+ file_name
+    path3 = path2+slash+file_name
+    os.mkdir(path2)
     #join time axis
     joined1 = pyc.PyCallisto.from_file(fit2_path)
     plt = joined1.spectrogram() #this will show in imshow thing
-    plt.savefig(path3+"_joined.png")
+    plt.savefig(path2+slash+"simple_joined.png")
     
     #slice in frequency axis
     freq_sliced = joined1.slice_frequency_axis(freq1, freq2)
     plt = freq_sliced.spectrogram() #this will show in imshow thing
-    plt.savefig(path3+"_freq_sliced.png")
+    plt.savefig(path2+slash+"freq_sliced.png")
     
     
     #slice in time axis
     time_sliced = freq_sliced.slice_time_axis(begin, end)
     plt = time_sliced.spectrogram() #this will show in imshow thing
-    plt.savefig(path3+"_time_sliced.png")
+    plt.savefig(path2+slash+"time_sliced.png")
     
     
     #do background subtraction
     background_subtracted = time_sliced.subtract_background()
     plt = background_subtracted.spectrogram()
-    plt.savefig(path3+"_bg_sub.png")
+    plt.savefig(path2+slash+"bg_sub.png")
     
     return 0
 
 
 # slice_time(path+ "/SONPK_20210830_120000_57.fit")
 #            File Name                time range for slicing   frequency range for slicing
-# slice_time("SONPK_20210828_050000_57", "05:03:00", "05:08:00","50","250")
+slice_time("MUPK_20170903_060000_59", "06:09:00", "06:11:00","50","200")
 
 
 

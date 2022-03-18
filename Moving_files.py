@@ -10,10 +10,10 @@ from variables import myYear, path1, cat_in_word,category
 from Filtering import fit_files
 import shutil
 import os
+import pandas as pd
 
 
 path = path1+myYear+"/"+cat_in_word+"_Data"
-path
 # os.mkdir(path1 + myYear) # comment this when year folder already exist
 
 def find(name, path):
@@ -41,5 +41,22 @@ def filter_by_time():
     return file
 
 # filter_by_time()
-move_files()
+# move_files()
 
+# def move_files_specific():# by using list
+    
+#     # list_1 = filter_by_time()
+#     list_1 = pd.read_csv("E:/CALLISTO/list.txt", header = None)
+#     list_1[0][1] = list_1[0][1].toString()
+
+#     for x in range (len(list_1)-1):
+#         list_1[0][x] = list_1[0][x].toString()
+#         print(list_1[0][x])
+
+#         src = find((list_1[0][x]), 'E:\\')#Source Path
+#         dst = "E:/CALLISTO/Specific/"+list_1[0][x]# Destination path
+#         shutil.copy(src, dst)
+#         continue
+#         return False
+
+# move_files_specific()

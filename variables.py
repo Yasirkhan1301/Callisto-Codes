@@ -10,5 +10,8 @@ Created on Fri Mar 11 11:45:56 2022
 
 myYear = '2017'
 path1 = "E:/CALLISTO/"
-category = "III/3"
-cat_in_word = "Category_3_3"
+category = "II/1"
+cat_in_word = "Category_2_1"
+types = ["I","II","III","IV","V","VI"]
+categories = ["1","2","3","4","5","6"]
+

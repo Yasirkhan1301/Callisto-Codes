@@ -15,11 +15,13 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
 from variables import path1, myYear, cat_in_word, category
+from os.path import exists
 
 
 slash = "/"
 path = path1 + myYear +slash+ cat_in_word + "_Data"
 path2 = path1 + myYear + slash+cat_in_word +"_Plots"
+
 
 def find(path):
     file = []
@@ -32,34 +34,39 @@ def find(path):
         
 def simple(path):
     fit = find(path)
-    os.mkdir(path2)
-    for x in range (len(fit)-1):    
-        fit_path = path+"/"+fit[0][x]
+    if exists(path2) == False:
+        os.mkdir(path2)    
+        
+    for x in range(len(fit)):    
+        fit_path = path+slash+fit[0][x]
         print(x,fit[0][x])
         #plot multiple files
         fits1 = pyc.PyCallisto.from_file(fit_path)
         plt = fits1.spectrogram() #this will show in imshow thing
-        plt.savefig(path2+"/"+fit[1][x]+".png")
+        plt.savefig(path2+slash+fit[1][x]+".png")
+        continue
     return False
     
-# simple(path)# To run this remove fits files that are below 100KBs
+simple(path)# To run this remove fits files that are below 100KBs
 
 
 def bg_sub(path):
     
      fit = find(path)
-     # path2 = Category + "_bg_sub_plots"
-     os.mkdir(path2+"_bg_sub")
-     for x in range(len(fit)-1):
-         fit_path = path+"/"+fit[0][x]
+     if exists(path2+"_bg_sub") == False:
+         os.mkdir(path2+"_bg_sub")
+         
+     for x in range(len(fit)):
+         fit_path = path+slash+fit[0][x]
          print(x,fit[0][x])
          fits1 = pyc.PyCallisto.from_file(fit_path)
          background_subtracted = fits1.subtract_background()
          plt = background_subtracted.spectrogram()
-         plt.savefig(path2+"_bg_sub"+"/"+ fit[1][x]+"_bg_sub.png")
+         plt.savefig(path2+"_bg_sub"+slash+ fit[1][x]+"_bg_sub.png")
+         continue
      return False
     
-# bg_sub(path)
+bg_sub(path)
 
 
 def slice_time(file_name, begin, end, freq1,freq2):
@@ -67,8 +74,10 @@ def slice_time(file_name, begin, end, freq1,freq2):
     fit2_path = path +slash+ file_name +".fit"
     path2 = path1+ slash+ myYear +slash+ 'plots_for_'+ file_name
     path3 = path2+slash+file_name
-    os.mkdir(path2)
-    #join time axis
+    if exists(path2) == False:
+        os.mkdir(path2)
+        
+        #join time axis
     joined1 = pyc.PyCallisto.from_file(fit2_path)
     plt = joined1.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"simple_joined.png")
@@ -95,7 +104,7 @@ def slice_time(file_name, begin, end, freq1,freq2):
 
 # slice_time(path+ "/SONPK_20210830_120000_57.fit")
 #            File Name                time range for slicing   frequency range for slicing
-slice_time("MUPK_20170903_060000_59", "06:09:00", "06:11:00","50","200")
+# slice_time("MUPK_20170905_071500_59", "07:21:00", "07:23:00","45","500")
 
 
 

@@ -35,13 +35,13 @@ def fit_files():
         d = d.set_index(d[1])
         d.drop_duplicates(subset=[4],inplace = True)
         d.index = d.index.floor('60min')
+        d.drop(labels = [1],inplace = True, axis = 1)
+        d.drop(d.index[d[3].str.contains(" ")], inplace = True)
+        d.to_csv("E:/CALLISTO/All_files_list.csv" , index = True)
         return d
     
 
-
-
-
-
+fit_files()
 
 
 

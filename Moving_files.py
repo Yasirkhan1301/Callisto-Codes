@@ -7,14 +7,15 @@ Created on Tue Feb  1 10:25:58 2022
 
 from ftplib_event_reader import cat_3
 from variables import myYear, path1, cat_in_word,category
-from Filtering import fit_files
 import shutil
 import os
 import pandas as pd
+from os.path import exists
 
 
 path = path1+myYear+"/"+cat_in_word+"_Data"
-# os.mkdir(path1 + myYear) # comment this when year folder already exist
+if exists(path1 + myYear) == False:
+    os.mkdir(path1 + myYear) 
 
 def find(name, path):
     for root, dirs, files in os.walk(path):
@@ -24,7 +25,9 @@ def find(name, path):
 def move_files():
     
     list_1 = filter_by_time()
-    # os.mkdir(path)
+    if exists(path) == False:
+        os.mkdir(path)
+
     for x in range (len(list_1)-1):     
         src = find(list_1[4][x], 'E:\\')#Source Path
         dst = path +'/'+list_1[4][x]# Destination path
@@ -33,15 +36,27 @@ def move_files():
         return False
 
 def filter_by_time():
-    d = fit_files()
+    d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
+    d.index = pd.to_datetime(d.index)
     cat = cat_3(category).index
     d.index.isin(cat)
     file = d[d.index.isin(cat)]
-    # file.drop_duplicates(subset = [4], inplace = True)
+       
     return file
 
+
+# fit_files()
 # filter_by_time()
-# move_files()
+move_files()
+
+
+
+
+
+
+
+
+
 
 # def move_files_specific():# by using list
     

@@ -13,5 +13,5 @@ path1 = "E:/CALLISTO/"
 category = "II/1"
 cat_in_word = "Category_2_1"
 types = ["I","II","III","IV","V","VI"]
-categories = ["1","2","3","4","5","6"]
+categories = ["1","2","3"]
 

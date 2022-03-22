@@ -8,7 +8,7 @@ Created on Fri Mar 11 11:45:56 2022
 
 
 
-myYear = '2017'
+myYear = '2019'
 path1 = "E:/CALLISTO/"
 category = "II/1"
 cat_in_word = "Category_2_1"

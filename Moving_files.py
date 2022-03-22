@@ -13,7 +13,7 @@ import pandas as pd
 from os.path import exists
 
 slash = "/"
-path = path1+myYear+"/"+cat_in_word+"_Data"
+path = path1+myYear+slash+cat_in_word+"_Data"
 if exists(path1 + myYear) == False:
     os.mkdir(path1 + myYear) 
 

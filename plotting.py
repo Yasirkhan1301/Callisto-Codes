@@ -19,8 +19,8 @@ from os.path import exists
 
 
 slash = "/"
-path = path1 + myYear +slash+ cat_in_word + "_Data"
-path2 = path1 + myYear + slash+cat_in_word +"_Plots"
+# path = path1 + myYear +slash+ "_Data"
+# path2 = path1 + myYear + slash+cat_in_word +"_Plots"
 
 
 def find(path):
@@ -32,41 +32,71 @@ def find(path):
     fit[1] = fit[0].str.replace(".fit", "")
     return fit
         
-def simple(path):
-    fit = find(path)
-    if exists(path2) == False:
-        os.mkdir(path2)    
-        
-    for x in range(len(fit)):    
-        fit_path = path+slash+fit[0][x]
-        print(x,fit[0][x])
-        #plot multiple files
-        fits1 = pyc.PyCallisto.from_file(fit_path)
-        plt = fits1.spectrogram() #this will show in imshow thing
-        plt.savefig(path2+slash+fit[1][x]+".png")
+def find_Data():      
+    x = []
+    start = path1+slash+myYear
+    for dirpath, dirnames, filenames in os.walk(start):
+        for dirname in dirnames:
+            if dirname == "Data":              
+                x.append(dirpath)
+    return x
+            
+
+
+# bg_sub_tree()
+
+def simple_in_tree():
+    dirs = find_Data()
+    dirs = pd.Series(dirs)
+    
+    for path in dirs:
+        path2 = path
+        path = path + "/Data"
+        fit = find(path) 
+        #saving plots in this dir
+        path3 = path2 + "\Plots"
+        if exists(path3) == False:            
+            os.mkdir(path3)    
+            fit = find(path)
+            if exists(path2) == False:
+                os.mkdir(path2)                    
+            for x in range(len(fit)):    
+                fit_path = path+slash+fit[0][x]
+                print(x,fit[0][x])
+                #plot multiple files
+                fits1 = pyc.PyCallisto.from_file(fit_path)
+                plt = fits1.spectrogram() #this will show in imshow thing
+                plt.savefig(path3+slash+fit[1][x]+".png")
+                continue
+                return False
+
+simple_in_tree()
+
+def bg_sub_tree():
+    
+    dirs = find_Data()
+    dirs = pd.Series(dirs)
+    for path in dirs:
+        path2 = path
+        path = path + "/Data"
+        fit = find(path) 
+        #saving plots in this dir
+        path3 = path2 + "\Plots_bg_sub"   
+        if exists(path3) == False:  
+            os.mkdir(path3)
+        for x in range(len(fit)):
+              fit_path = path+slash+fit[0][x]
+              print(x,fit[0][x])
+              fits1 = pyc.PyCallisto.from_file(fit_path)
+              background_subtracted = fits1.subtract_background()
+              plt = background_subtracted.spectrogram()
+              plt.savefig(path3+slash+ fit[1][x]+"_bg_sub.png")
+              continue
         continue
-    return False
-    
-simple(path)# To run this remove fits files that are below 100KBs
+        return False
 
+bg_sub_tree()
 
-def bg_sub(path):
-    
-     fit = find(path)
-     if exists(path2+"_bg_sub") == False:
-         os.mkdir(path2+"_bg_sub")
-         
-     for x in range(len(fit)):
-         fit_path = path+slash+fit[0][x]
-         print(x,fit[0][x])
-         fits1 = pyc.PyCallisto.from_file(fit_path)
-         background_subtracted = fits1.subtract_background()
-         plt = background_subtracted.spectrogram()
-         plt.savefig(path2+"_bg_sub"+slash+ fit[1][x]+"_bg_sub.png")
-         continue
-     return False
-    
-bg_sub(path)
 
 
 def slice_time(file_name, begin, end, freq1,freq2):
@@ -110,6 +140,47 @@ def slice_time(file_name, begin, end, freq1,freq2):
 
 
 
+
+
+
+
+#old version
+# def simple(path):
+#     fit = find(path)
+#     if exists(path2) == False:
+#         os.mkdir(path2)    
+        
+#     for x in range(len(fit)):    
+#         fit_path = path+slash+fit[0][x]
+#         print(x,fit[0][x])
+#         #plot multiple files
+#         fits1 = pyc.PyCallisto.from_file(fit_path)
+#         plt = fits1.spectrogram() #this will show in imshow thing
+#         plt.savefig(path2+slash+fit[1][x]+".png")
+#         continue
+#     return False
+    
+# simple(path)# To run this remove fits files that are below 100KBs
+
+
+# def bg_sub(path):
+    
+   
+#      fit = find(path)
+#      if exists(path2+"_bg_sub") == False:
+#          os.mkdir(path2+"_bg_sub")
+         
+#      for x in range(len(fit)):
+#          fit_path = path+slash+fit[0][x]
+#          print(x,fit[0][x])
+#          fits1 = pyc.PyCallisto.from_file(fit_path)
+#          background_subtracted = fits1.subtract_background()
+#          plt = background_subtracted.spectrogram()
+#          plt.savefig(path2+"_bg_sub"+slash+ fit[1][x]+"_bg_sub.png")
+#          continue
+#      return False
+    
+# bg_sub(path)
 
 
 

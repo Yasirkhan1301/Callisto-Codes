@@ -14,24 +14,28 @@ import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 from datetime import datetime
 import pandas as pd
-from variables import path1, myYear, cat_in_word, category
+from variables import path1, myYear
 from os.path import exists
 
 
 slash = "/"
-# path = path1 + myYear +slash+ "_Data"
-# path2 = path1 + myYear + slash+cat_in_word +"_Plots"
-
 
 def find(path):
-    file = []
-    for files in os.walk(path):
+    file_list = []
+    for files in os.walk(path): 
         continue
-        files = find(path)
-    fit = pd.DataFrame(files[2])
+    files = files[2]
+    for file in files:
+        file_size = os.path.getsize(path +"\\"+file)
+        file_size = file_size/1000
+        if file_size >= 200:
+            file_list.append(file)
+        # files = find(path)
+    fit = pd.DataFrame(file_list)
     fit[1] = fit[0].str.replace(".fit", "")
     return fit
-        
+
+ 
 def find_Data():      
     x = []
     start = path1+slash+myYear
@@ -40,10 +44,7 @@ def find_Data():
             if dirname == "Data":              
                 x.append(dirpath)
     return x
-            
 
-
-# bg_sub_tree()
 
 def simple_in_tree():
     dirs = find_Data()
@@ -70,7 +71,7 @@ def simple_in_tree():
                 continue
                 return False
 
-simple_in_tree()
+# simple_in_tree()
 
 def bg_sub_tree():
     
@@ -95,11 +96,12 @@ def bg_sub_tree():
         continue
         return False
 
-bg_sub_tree()
+# bg_sub_tree()
 
 
 
 def slice_time(file_name, begin, end, freq1,freq2):
+    dirs = find_Data()
     
     fit2_path = path +slash+ file_name +".fit"
     path2 = path1+ slash+ myYear +slash+ 'plots_for_'+ file_name

@@ -99,18 +99,17 @@ def bg_sub_tree():
 # bg_sub_tree()
 
 
-
-def slice_time(file_name, begin, end, freq1,freq2):
-    dirs = find_Data()
+def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     
-    fit2_path = path +slash+ file_name +".fit"
-    path2 = path1+ slash+ myYear +slash+ 'plots_for_'+ file_name
+    # dirs = find_Data()    
+    fit_path = fit2_path +slash+"Data"+slash+file_name+".fit"
+    path2 = fit2_path +slash+ 'plots_for_'+ file_name
     path3 = path2+slash+file_name
     if exists(path2) == False:
         os.mkdir(path2)
         
         #join time axis
-    joined1 = pyc.PyCallisto.from_file(fit2_path)
+    joined1 = pyc.PyCallisto.from_file(fit_path)
     plt = joined1.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"simple_joined.png")
     
@@ -133,10 +132,13 @@ def slice_time(file_name, begin, end, freq1,freq2):
     
     return 0
 
-
+types = "II"
+category= "2"
+file_name = "MUPK_20190308_033001_59"
+data_path = path1+myYear+slash+types+slash+category
 # slice_time(path+ "/SONPK_20210830_120000_57.fit")
-#            File Name                time range for slicing   frequency range for slicing
-# slice_time("MUPK_20170905_071500_59", "07:21:00", "07:23:00","45","500")
+#            File Name,                time range for slicing,   frequency range for slicing , data path
+slice_time(data_path, file_name, "03:33:00", "03:39:00","45","200")
 
 
 

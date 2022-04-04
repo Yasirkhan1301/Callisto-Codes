@@ -52,7 +52,7 @@ class PyCallisto:
         hdu_list = pyfits.open(infits)
         return cls(hdu_list)
 
-    def spectrogram(self, option=3, xtick=2, blevel=0, end_pts=[False, False], fig_size=(8, 6), cmap=cm.jet,
+    def spectrogram(self, option=3, xtick=2, blevel=0, end_pts=[False, False], fig_size=(8, 6), cmap = cm.jet,
                     color_bar=True, color_bar_ori='vertical', font_size=14):
 
         """

@@ -16,7 +16,7 @@ from datetime import datetime
 import pandas as pd
 from variables import path1, myYear
 from os.path import exists
-
+from matplotlib import cm
 
 slash = "/"
 
@@ -113,7 +113,7 @@ def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     plt = joined1.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"simple_joined.png")
     
-    #slice in frequency axis
+    # slice in frequency axis
     freq_sliced = joined1.slice_frequency_axis(freq1, freq2)
     plt = freq_sliced.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"freq_sliced.png")
@@ -121,6 +121,7 @@ def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     
     #slice in time axis
     time_sliced = freq_sliced.slice_time_axis(begin, end)
+    # time_sliced = freq_sliced.slice_time_axis(begin, end)
     plt = time_sliced.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"time_sliced.png")
     
@@ -132,13 +133,13 @@ def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     
     return 0
 
-types = "II"
+types = "III"
 category= "2"
-file_name = "MUPK_20190308_033001_59"
+file_name = "MUPK_20210524_103000_59"
 data_path = path1+myYear+slash+types+slash+category
 # slice_time(path+ "/SONPK_20210830_120000_57.fit")
 #            File Name,                time range for slicing,   frequency range for slicing , data path
-slice_time(data_path, file_name, "03:33:00", "03:39:00","45","200")
+slice_time(data_path, file_name, "10:36:00", "10:38:00","45","850")
 
 
 

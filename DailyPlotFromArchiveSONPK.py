@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 import numpy as np
 import glob
-from variables import date, myYear,path2
+from variables import date, myYear,path2,path1
 
 slash = "/"
 file_names = []
@@ -66,10 +66,10 @@ def main(path,date,ID,FC):
     fig.text(0.91, 0.19, '20-23UT', va='center', rotation='horizontal', fontsize=15)
     fig.subplots_adjust(wspace=0.001, hspace=0.1)
     plt.suptitle("Full day spectra "+date+" station: "+ID+' with focus-code: '+FCe[1:3], size=16)
-    plt.savefig(ID+'_'+date[0:4]+date[5:7]+date[8:10]+'_'+FCe[1:3]+'.png')
+    plt.savefig(path1 + "Daily_Overview"+slash+myYear+slash+ ID+'_'+date[0:4]+date[5:7]+date[8:10]+'_'+FCe[1:3]+'.png')
 
 try:
-    main(path2,date,'MUPK','59') # date-code, instrument-code, focus-code
+    main(path2,date,'SONPK','59') # date-code, instrument-code, focus-code
 
 except:
     print ("Error, most probably one or more corrupt FIT-file(s): ",sys.exc_info())

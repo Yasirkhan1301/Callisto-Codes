@@ -8,7 +8,7 @@ Created on Fri Mar 11 11:45:56 2022
 
 
 slash = "/"
-myYear = '2021'
+myYear = '2017'
 date = myYear+"-07-03"
 path1 = "E:/CALLISTO/"
 # category = "II/1"

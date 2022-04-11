@@ -43,20 +43,6 @@ def fit_files():
 
 fit_files()
 
-
-
-
-
-
-
-
-
-# def filter_by_time():
-#     d = fit_files()
-#     cat = cat_3(category).index
-#     d.index.isin(cat)
-#     file = d[d.index.isin(cat)]
-#     return file
     
     
 
@@ -80,24 +66,3 @@ fit_files()
 
 
 
-
- # d[2] = pd.to_datetime(d[2])
- #        d.set_index(d[1] + d[2])
- #        d.index = pd.to_datetime(d.index)
- #        d
- #        d[4] = actual
- #        d.drop_duplicates(subset = [] , inplace = True)
- #        d[3] = d[1]
- #        d[1] = d[1] + d[2]
- #        d[[1]] = d[[1]].apply(pd.to_datetime)
- #        d = d.set_index([1])
- #        d.drop(
- #                d.index[d[0] == "GAURI"] | d.index[d[0] == "IISERP"],
- #                inplace = True
- #                )
-        
- #        fin = []
- #        n = event_dates.events().index
- #        d.index = d.index.floor('60min')
- #        dfa = d[d.index.isin(n)]
- #        df = pd.DataFrame(dfa[4])

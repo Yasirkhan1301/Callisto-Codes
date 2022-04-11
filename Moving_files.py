@@ -70,7 +70,6 @@ def move_files_auto():
         continue
         return False
               
-move_files_auto()
 
 
 
@@ -79,29 +78,3 @@ move_files_auto()
 # filter_by_time()
 # move_files()
 
-
-
-
-
-
-
-
-
-
-# def move_files_specific():# by using list
-    
-#     # list_1 = filter_by_time()
-#     list_1 = pd.read_csv("E:/CALLISTO/list.txt", header = None)
-#     list_1[0][1] = list_1[0][1].toString()
-
-#     for x in range (len(list_1)-1):
-#         list_1[0][x] = list_1[0][x].toString()
-#         print(list_1[0][x])
-
-#         src = find((list_1[0][x]), 'E:\\')#Source Path
-#         dst = "E:/CALLISTO/Specific/"+list_1[0][x]# Destination path
-#         shutil.copy(src, dst)
-#         continue
-#         return False
-
-# move_files_specific()

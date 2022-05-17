@@ -17,12 +17,12 @@ path = path1+myYear+slash+cat_in_word+"_Data"
 if exists(path1 + myYear) == False:
     os.mkdir(path1 + myYear) 
 
-def find(name, path):
+def find(name, path):#return root dir and name of a given file
     for root, dirs, files in os.walk(path):
         if name in files:
             return os.path.join(root, name)
 
-def move_files():
+def move_files():#make directory and move required files in this directory
     
     list_1 = filter_by_time()
     if exists(path) == False:
@@ -53,22 +53,6 @@ def filter_by_time(categories):
        
     return file
 
-def move_files_auto():
-      for x in range (len(types)):
-        for j in range(len(categories)):
-            list_1 = filter_by_time(types[x]+slash+categories[j])
-            if len(list_1):
-                path = path1 + myYear+slash+types[x]+slash+categories[j]+slash+"Data"+slash
-                if exists(path) == False:
-                    os.makedirs(path)         
-                for c in range (len(list_1)):     
-                  src = find(list_1[4][c], 'E:\\')#Source Path
-                  dst = path+list_1[4][c]# Destination path
-                  shutil.copy(src, dst)
-                  continue
-            continue
-        continue
-        return False
               
 
 

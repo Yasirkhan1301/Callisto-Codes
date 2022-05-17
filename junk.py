@@ -290,3 +290,23 @@ Created on Mon Apr 11 10:15:41 2022
 #     d.index.isin(cat)
 #     file = d[d.index.isin(cat)]
 #     return file
+
+
+
+
+# def move_files_auto():
+#       for x in range (len(types)):
+#         for j in range(len(categories)):
+#             list_1 = filter_by_time(types[x]+slash+categories[j])
+#             if len(list_1):
+#                 path = path1 + myYear+slash+types[x]+slash+categories[j]+slash+"Data"+slash
+#                 if exists(path) == False:
+#                     os.makedirs(path)         
+#                 for c in range (len(list_1)):     
+#                   src = find(list_1[4][c], 'E:\\')#Source Path
+#                   dst = path+list_1[4][c]# Destination path
+#                   shutil.copy(src, dst)
+#                   continue
+#             continue
+#         continue
+#         return False

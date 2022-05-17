@@ -11,13 +11,13 @@ import datetime
 import pandas as pd
 
 
-def fit_files():
+def fit_files():#this function save a list of all '.fit' files present in a given directory, in this case E drive.
     
         fs = []
         actual = []
         fd = []
 
-        for root, dirs, files in os.walk(r'E:\\'):
+        for root, dirs, files in os.walk(r'E:\\'): # change drive name 
             # select file name
             for file in files:
                 # check the extension of files

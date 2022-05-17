@@ -12,8 +12,7 @@ from variables import myYear, path1
 
 path = path1
 
-
-def extract_files():
+def extract_files(): # only to extract .tar.gz file, it can be done with winrar or any other software manualy
     
     archive = myYear + '_events.tar.gz'
     
@@ -30,7 +29,7 @@ def extract_files():
 
 # extract_files()
 
-def read_files():
+def read_files():# read extracted files, combine them in a dataframe
     liste = glob.glob(path + myYear+"_events/*.txt")
     df1 = []
     
@@ -81,12 +80,14 @@ def cat_3_3(index, category):#index in parameters is for the end and begin timin
     return cat_3
     
 
-def cat_3(category):
+def cat_3(category):#return dataframe of category passed in the parameter
     final_df = pd.concat([cat_3_3(1,category),cat_3_3(3,category)])
     final_df.drop(labels = [11], axis = 1, inplace = True)
     final_df.drop_duplicates(inplace = True)
     final_df
     return final_df
+
+#uncomment following lines for testing
 
 # cat_3_3(3,"III/2")
 # cat_3_3(3, "III/3")[11]

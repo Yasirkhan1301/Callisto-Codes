@@ -8,9 +8,10 @@ Created on Fri Mar 11 11:45:56 2022
 
 
 slash = "/"
-myYear = '2017'
-date = myYear+"-07-03"
+myYear = '2022'
+date = myYear+"-06-01"
 path1 = "E:/CALLISTO/"
+# cat_in_word = 
 # category = "II/1"
 types = ["I","II","III","IV","V","VI"]
 categories = ["1","2","3"]

@@ -5,6 +5,36 @@ Created on Mon Apr 11 10:15:41 2022
 @author: Administrator
 """
 
+
+# fit_files()
+# filter_by_time("III/3")
+
+
+# def move_files():#make directory and move required files in this directory
+    
+#     list_1 = filter_by_time()
+#     list_1
+#     if exists(path) == False:
+#         os.mkdir(path)
+
+#     for x in range (len(list_1)):     
+#         src = find(list_1[4][x], 'E:\\')#Source Path
+#         dst = path +'/'+list_1[4][x]# Destination path
+#         shutil.copy(src, dst)
+#         continue
+#         return False
+
+# def filter_by_time():
+#     d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
+#     d.index = pd.to_datetime(d.index)
+#     cat = cat_3(category).index
+#     d.index.isin(cat)
+#     file = d[d.index.isin(cat)]
+       
+#     return file
+
+
+
 # def move_files_specific():# by using list
     
 #     # list_1 = filter_by_time()

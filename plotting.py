@@ -71,7 +71,7 @@ def simple_in_tree():
                 continue
                 return False
 
-# simple_in_tree()
+simple_in_tree()
 
 def bg_sub_tree():
     
@@ -96,7 +96,7 @@ def bg_sub_tree():
         continue
         return False
 
-# bg_sub_tree()
+bg_sub_tree()
 
 
 def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
@@ -133,11 +133,11 @@ def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     
     return 0
 
-types = "III"
-category= "2"
-file_name = "MUPK_20210524_103000_59"
-data_path = path1+myYear+slash+types+slash+category
-# slice_time(path+ "/SONPK_20210830_120000_57.fit")
-#            File Name,                time range for slicing,   frequency range for slicing , data path
-slice_time(data_path, file_name, "10:36:00", "10:38:00","45","850")
+# types = "III"
+# category= "2"
+# file_name = "MUPK_20210524_103000_59"
+# data_path = path1+myYear+slash+types+slash+category
+# # slice_time(path+ "/SONPK_20210830_120000_57.fit")
+# #            File Name,                time range for slicing,   frequency range for slicing , data path
+# slice_time(data_path, file_name, "10:36:00", "10:38:00","45","850")
 

@@ -3,6 +3,9 @@
 Created on Wed Feb  9 11:29:27 2022
 
 @author: Administrator
+
+Event list : ftp://ftp.swpc.noaa.gov/pub/warehouse/
+
 """
 import tarfile
 import glob

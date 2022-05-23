@@ -3,17 +3,19 @@
 Created on Tue Feb  1 10:25:58 2022
 
 @author: Administrator
-"""
 
+Event list : ftp://ftp.swpc.noaa.gov/pub/warehouse/
+
+"""
 from ftplib_event_reader import cat_3
-from variables import myYear, path1, cat_in_word,category,types, categories
+from variables import myYear, path1,types,categories
 import shutil
 import os
 import pandas as pd
 from os.path import exists
 
 slash = "/"
-path = path1+myYear+slash+cat_in_word+"_Data"
+path = path1+myYear
 if exists(path1 + myYear) == False:
     os.mkdir(path1 + myYear) 
 
@@ -22,29 +24,7 @@ def find(name, path):#return root dir and name of a given file
         if name in files:
             return os.path.join(root, name)
 
-def move_files():#make directory and move required files in this directory
-    
-    list_1 = filter_by_time()
-    if exists(path) == False:
-        os.mkdir(path)
-
-    for x in range (len(list_1)):     
-        src = find(list_1[4][x], 'E:\\')#Source Path
-        dst = path +'/'+list_1[4][x]# Destination path
-        shutil.copy(src, dst)
-        continue
-        return False
-
-def filter_by_time():
-    d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
-    d.index = pd.to_datetime(d.index)
-    cat = cat_3(category).index
-    d.index.isin(cat)
-    file = d[d.index.isin(cat)]
-       
-    return file
-
-def filter_by_time(categories):
+def filter_by_time(categories):# return the list of files present in the noaa solar events 
     d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
     d.index = pd.to_datetime(d.index)
     cat = cat_3(categories).index
@@ -52,13 +32,27 @@ def filter_by_time(categories):
     file = d[d.index.isin(cat)]
        
     return file
-
               
+def dir_tree():#access types and categories, and move files in directory tree pattern
+    for t in types:
+        for c in categories:
+            list_1 = filter_by_time(t+slash+c)
+            length = len(list_1)
+            path = path1+slash+myYear+slash+t+slash+c+slash+"Data"
+            if exists(path) == False and length:
+               os.makedirs(path)
+            for x in range (len(list_1)):     
+                src = find(list_1[4][x], 'E:\\')#Source Path
+                dst = path +'/'+list_1[4][x]# Destination path
+                shutil.copy(src, dst)
+                continue
+                return 0
+            
+dir_tree()  
+     
+            
 
 
+    
 
-
-# fit_files()
-# filter_by_time()
-# move_files()
 

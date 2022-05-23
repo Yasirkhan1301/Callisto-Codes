@@ -14,10 +14,43 @@ import os
 import pandas as pd
 from os.path import exists
 
+
 slash = "/"
 path = path1+myYear
+
 if exists(path1 + myYear) == False:
     os.mkdir(path1 + myYear) 
+    
+def fit_files():#this function save a list of all '.fit' files present in a given directory, in this case E drive.
+    
+        fs = []
+        actual = []
+        fd = []
+
+        for root, dirs, files in os.walk(r'E:\\'): # change drive name 
+            # select file name
+            for file in files:
+                # check the extension of files
+                if file.endswith('.fit'):
+                    # print whole path of files             
+                    fs.append(file.split('_'))
+                    fd.append(file)
+                    actual.append(file.split('.'))
+ 
+        d = pd.DataFrame(fs)
+        ds = pd.DataFrame(actual)
+        d[3],d[4] = ds[0] , fd
+        d.drop(d.index[d[1].isnull()], inplace = True)
+        d[1] = pd.to_datetime(d[1] + d[2])
+        d = d.set_index(d[1])
+        d.drop_duplicates(subset=[4],inplace = True)
+        d.index = d.index.floor('60min')
+        d.drop(labels = [1],inplace = True, axis = 1)
+        d.drop(d.index[d[3].str.contains(" ")], inplace = True)
+        d.to_csv("E:/CALLISTO/All_files_list.csv" , index = True)
+        return d
+    
+# fit_files()# uncomment this to save or update the fits files list available in E directory(where your data resides)
 
 def find(name, path):#return root dir and name of a given file
     for root, dirs, files in os.walk(path):
@@ -48,7 +81,7 @@ def dir_tree():#access types and categories, and move files in directory tree pa
                 continue
                 return 0
             
-dir_tree()  
+# dir_tree()  #uncomment this line to save the data according to its type and cateogry
      
             
 

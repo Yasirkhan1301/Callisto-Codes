@@ -29,23 +29,17 @@ def extract_files(): # only to extract .tar.gz file, it can be done with winrar 
         
     return False
     
-
 # extract_files()
 
 def read_files():# read extracted files, combine them in a dataframe
     liste = glob.glob(path + myYear+"_events/*.txt")
     df1 = []
-    
     for x in range (len(liste)-1):
-        
         #           Event   Begind    Max       End     Obs      
         colspecs = [(0, 6),(10, 16), (18, 22),(27,32),(34,37),
                     (38,40),(40,46),(48,52),(56,63),(65,73)]
         #               Q     Type   Loc     Cat/type
-        
         df = pd.read_fwf(liste[x], colspecs=colspecs, header = None)
-        df
-        
         df.drop(
                 labels = [0,1,2,3,4,5,6,7,8,9,10,11],
                 axis = 0,
@@ -61,7 +55,6 @@ def read_files():# read extracted files, combine them in a dataframe
         df1.append(df)
         continue
     return df1
-
 
 def cat_3_3(index, category):#index in parameters is for the end and begin timing column
     dfs = read_files()
@@ -79,7 +72,6 @@ def cat_3_3(index, category):#index in parameters is for the end and begin timin
     cat_3 = cat_3.set_index(cat_3[11])
     cat_3 =  cat_3.between_time('00:30', '15:00')
     cat_3.index = cat_3.index.floor('60min')
-    
     return cat_3
     
 

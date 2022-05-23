@@ -71,7 +71,7 @@ def simple_in_tree():
                 continue
                 return False
 
-simple_in_tree()
+# simple_in_tree()#uncomment this to make simple specrtrogram
 
 def bg_sub_tree():
     
@@ -96,15 +96,14 @@ def bg_sub_tree():
         continue
         return False
 
-bg_sub_tree()
+# bg_sub_tree()#uncomment this to make bg subtracted spectrogram
 
 
-def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
+def slice_time(types, category,file_name, begin, end, freq1,freq2):
     
     # dirs = find_Data()    
-    fit_path = fit2_path +slash+"Data"+slash+file_name+".fit"
-    path2 = fit2_path +slash+ 'plots_for_'+ file_name
-    path3 = path2+slash+file_name
+    fit_path = path1+myYear+slash+types+slash+category+slash+"Data"+slash+file_name+".fit"
+    path2 = path1+myYear+slash+ 'plots_for_'+types+"_"+category+"_"+file_name
     if exists(path2) == False:
         os.mkdir(path2)
         
@@ -133,11 +132,10 @@ def slice_time( fit2_path,file_name, begin, end, freq1,freq2):
     
     return 0
 
-# types = "III"
-# category= "2"
-# file_name = "MUPK_20210524_103000_59"
-# data_path = path1+myYear+slash+types+slash+category
-# # slice_time(path+ "/SONPK_20210830_120000_57.fit")
-# #            File Name,                time range for slicing,   frequency range for slicing , data path
-# slice_time(data_path, file_name, "10:36:00", "10:38:00","45","850")
+types = "VI"
+category= "1"
+file_name = "MUPK_20220406_141500_59"
+# slice_time(path+ "/SONPK_20210830_120000_57.fit")
+#            File Name,                time range for slicing,   frequency range for slicing , data path
+slice_time(types, category, file_name, "14:16:00", "14:20:00","45","850")
 

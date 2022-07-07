@@ -6,17 +6,11 @@ Created on Thu Jan 27 10:33:12 2022
 """
 #For Plotting the data
 import os
-import sys
 import pyCallisto as pyc
-import pyCallisto_Utils as utils
-#import pyfits
-import astropy.io.fits as pyfits
-import matplotlib.pyplot as plt
-from datetime import datetime
 import pandas as pd
 from variables import path1, myYear
 from os.path import exists
-from matplotlib import cm
+
 
 slash = "/"
 
@@ -35,7 +29,6 @@ def find(path):
     fit[1] = fit[0].str.replace(".fit", "")
     return fit
 
- 
 def find_Data():      
     x = []
     start = path1+slash+myYear
@@ -98,7 +91,6 @@ def bg_sub_tree():
 
 # bg_sub_tree()#uncomment this to make bg subtracted spectrogram
 
-
 def slice_time(types, category,file_name, begin, end, freq1,freq2):
     
     # dirs = find_Data()    
@@ -117,6 +109,11 @@ def slice_time(types, category,file_name, begin, end, freq1,freq2):
     plt = freq_sliced.spectrogram() #this will show in imshow thing
     plt.savefig(path2+slash+"freq_sliced.png")
     
+    #do background subtraction
+    background_subtracted = freq_sliced.subtract_background()
+    plt = background_subtracted.spectrogram()
+    plt.savefig(path2+slash+"bg_sub.png")
+
     
     #slice in time axis
     time_sliced = freq_sliced.slice_time_axis(begin, end)
@@ -128,14 +125,14 @@ def slice_time(types, category,file_name, begin, end, freq1,freq2):
     #do background subtraction
     background_subtracted = time_sliced.subtract_background()
     plt = background_subtracted.spectrogram()
-    plt.savefig(path2+slash+"bg_sub.png")
+    plt.savefig(path2+slash+"time_sliced_bg_sub.png")
     
     return 0
 
-types = "VI"
-category= "1"
-file_name = "MUPK_20220406_141500_59"
-# slice_time(path+ "/SONPK_20210830_120000_57.fit")
-#            File Name,                time range for slicing,   frequency range for slicing , data path
-slice_time(types, category, file_name, "14:16:00", "14:20:00","45","850")
+# types = "III"
+# category= "3"
+# file_name = "SONPK_20210828_050000_57"
+# # slice_time(path+ "/SONPK_20210830_120000_57.fit")
+# #            File Name,                time range for slicing,   frequency range for slicing , data path
+# slice_time(types, category, file_name, "05:03:00", "05:06:00","45","200")
 

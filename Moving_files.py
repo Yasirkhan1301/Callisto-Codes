@@ -61,9 +61,8 @@ def filter_by_time(categories):# return the list of files present in the noaa so
     d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
     d.index = pd.to_datetime(d.index)
     cat = cat_3(categories).index
-    d.index.isin(cat)
-    file = d[d.index.isin(cat)]
-       
+    # d.index.isin(cat)# index number
+    file = d[d.index.isin(cat)]    
     return file
               
 def dir_tree():#access types and categories, and move files in directory tree pattern

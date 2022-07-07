@@ -32,7 +32,7 @@ def extract_files(): # only to extract .tar.gz file, it can be done with winrar 
 # extract_files()
 
 def read_files():# read extracted files, combine them in a dataframe
-    liste = glob.glob(path + myYear+"_events/*.txt")
+    liste = glob.glob(path+"Event list/" + myYear+"_events/*.txt")
     df1 = []
     for x in range (len(liste)-1):
         #           Event   Begind    Max       End     Obs      
@@ -84,6 +84,7 @@ def cat_3(category):#return dataframe of category passed in the parameter
 
 #uncomment following lines for testing
 
-# cat_3_3(3,"III/2")
+cat_3_3(3,"VI/1")
+cat_3("III/3")
 # cat_3_3(3, "III/3")[11]
 

@@ -38,7 +38,7 @@ class Read_events:
         self.s = d.s
         self.path1 = d.path
  
-    def extract_files(self): # only to extract .tar.gz file, it can be done with winrar or any other software manualy 
+    # def extract_files(self): # only to extract .tar.gz file, it can be done with winrar or any other software manualy 
         # archive = self.year + '_events.tar.gz'
         # tar = tarfile.open(archive, "r:gz")# download and put archive 
         # # file in the working directory   
@@ -140,7 +140,8 @@ class Read_events:
         file = d[d.index.isin(cat)]    
         return file
                   
-    def dir_tree(self,g):#access types and categories, and move files in directory tree pattern
+    def dir_tree(self):#access types and categories, and move files in directory tree pattern
+        g = self.fit_files()
         for t in self.types:
             for c in self.categories:
                 list_1 = self.filter_by_time(g,t+self.s+c)
@@ -158,8 +159,7 @@ class Read_events:
         
 p = variables(2022,1,1,"E:/CALLISTO/")
 read_events = Read_events(p)
-list_of_fit_files = read_events.fit_files()
-read_events.dir_tree(list_of_fit_files)
+read_events.dir_tree()
  
 # class plotting:
 #     def __init__(self,d):

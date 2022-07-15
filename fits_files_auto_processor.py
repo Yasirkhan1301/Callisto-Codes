@@ -10,42 +10,77 @@ import os
 import pandas as pd
 from os.path import exists
 import glob
-
+from sys import stdout
+from time import sleep
 
 class variables:
-    def __init__(self, year, month, day, path):
+    def __init__(self, year, month, day, source, destination):
         
         self.s = "/"
         self.types = ["I","II","III","IV","V","VI"]
         self.categories = ["1","2","3"]
-        self.year = str(year)
-        self.month = str(month)
-        self.day = str(day)
-        self.date = self.year+"-"+self.month+"-"+self.day
-        self.path = path
-       
-        self.path2 = self.path + "Daily_Overview"+self.s+self.year+self.s+self.day+self.s
-        
+        self.year = year
+        self.month = month
+        self.day = day
+        # self.date = self.year+"-"+self.month+"-"+self.day
+        self.dst = destination
+        self.src = source
+        # self.path2 = self.path + "Daily_Overview"+self.s+self.year+self.s+self.day+self.s       
 
 class Read_events:
     
     def __init__(self, d):
-        self.path = d.path
-        self.year = d.year
+        self.path = d.dst
+        self.year = str(d.year)
+        self.year_int = d.year
         self.path2 = self.path+"Event list/" + self.year+"_events/*.txt"
         self.types = d.types
         self.categories = d.categories
         self.s = d.s
-        self.path1 = d.path
- 
-    # def extract_files(self): # only to extract .tar.gz file, it can be done with winrar or any other software manualy 
+        self.path1 = d.dst
+        self.month = d.month
+        self.day = d.day
+        self.source  = d.src
+    def extract_files(self): # only to extract .tar.gz file, it can be done with winrar or any other software manualy 
         # archive = self.year + '_events.tar.gz'
         # tar = tarfile.open(archive, "r:gz")# download and put archive 
         # # file in the working directory   
         # for member in tar.getmembers():
         #     #print "Extracting %s" % member.name
         #     tar.extract(member, path='')  
-        # return False
+        return False
+    
+    def find(self,name, path):#return root dir and name of a given file
+        for root, dirs, files in os.walk(path):
+            if name in files:
+                return os.path.join(root, name)
+            
+    def fit_files_list(self):#this function save a list of all '.fit' files present in a given directory, in this case E drive.
+    
+        fs = []
+        actual = []
+        fd = []
+        for root, dirs, files in os.walk(self.source): # change drive name 
+            # select file name
+            for file in files:
+                # check the extension of files
+                if file.endswith('.fit'):
+                    # print whole path of files             
+                    fs.append(file.split('_'))
+                    fd.append(file)
+                    actual.append(file.split('.'))
+        d = pd.DataFrame(fs)
+        ds = pd.DataFrame(actual)
+        d[3],d[4] = ds[0] , fd
+        d.drop(d.index[d[1].isnull()], inplace = True)
+        d[1] = pd.to_datetime(d[1] + d[2])
+        d = d.set_index(d[1])
+        d.drop_duplicates(subset=[4],inplace = True)
+        d.index = d.index.floor('60min')
+        d.drop(labels = [1],inplace = True, axis = 1)
+        d.drop(d.index[d[3].str.contains(" ")], inplace = True)
+        # d.to_csv("E:/CALLISTO/All_files_list.csv" , index = True)
+        return d
     
     def read_files(self):# read extracted files, combine them in a dataframe
         liste = glob.glob(self.path2)
@@ -72,7 +107,7 @@ class Read_events:
             continue
         return df1
 
-    def cat_3_3(self,index, category):#index in parameters is for the end and begin timing column
+    def search(self,index, category):#search index in parameters is for the end and begin timing column
         dfs = self.read_files()
         final = pd.concat(dfs)
         final.drop(
@@ -90,58 +125,24 @@ class Read_events:
         cat_3.index = cat_3.index.floor('60min')
         return cat_3
 
-    def cat_3(self,category):#return dataframe of category passed in the parameter
-        final_df = pd.concat([self.cat_3_3(1,category),self.cat_3_3(3,category)])
+    def category(self,category):#return dataframe of category passed in the parameter
+        final_df = pd.concat([self.search(1,category),self.search(3,category)])
         final_df.drop(labels = [11], axis = 1, inplace = True)
         final_df.drop_duplicates(inplace = True)
         final_df
         return final_df
     
-    def fit_files(self):#this function save a list of all '.fit' files present in a given directory, in this case E drive.
-    
-        fs = []
-        actual = []
-        fd = []
-
-        for root, dirs, files in os.walk(r'E:\\'): # change drive name 
-            # select file name
-            for file in files:
-                # check the extension of files
-                if file.endswith('.fit'):
-                    # print whole path of files             
-                    fs.append(file.split('_'))
-                    fd.append(file)
-                    actual.append(file.split('.'))
- 
-        d = pd.DataFrame(fs)
-        ds = pd.DataFrame(actual)
-        d[3],d[4] = ds[0] , fd
-        d.drop(d.index[d[1].isnull()], inplace = True)
-        d[1] = pd.to_datetime(d[1] + d[2])
-        d = d.set_index(d[1])
-        d.drop_duplicates(subset=[4],inplace = True)
-        d.index = d.index.floor('60min')
-        d.drop(labels = [1],inplace = True, axis = 1)
-        d.drop(d.index[d[3].str.contains(" ")], inplace = True)
-        # d.to_csv("E:/CALLISTO/All_files_list.csv" , index = True)
-        return d
-    
-    def find(self,name, path):#return root dir and name of a given file
-        for root, dirs, files in os.walk(path):
-            if name in files:
-                return os.path.join(root, name)
-    
-    def filter_by_time(self,g,categories):# return the list of files present in the noaa solar events 
-        # d = pd.read_csv("E:/CALLISTO/All_files_list.csv", index_col= 0).rename(columns=int)
+    def filter_by_time(self,g,category):# return the list of files present in the noaa solar events 
         d = g
         d.index = pd.to_datetime(d.index)
-        cat = self.cat_3(categories).index
+        cat = self.category(category).index
         # d.index.isin(cat)# index number
         file = d[d.index.isin(cat)]    
         return file
                   
-    def dir_tree(self):#access types and categories, and move files in directory tree pattern
-        g = self.fit_files()
+    def categorize(self):#access types and categories, and move files in directory tree pattern
+        g = self.fit_files_list()
+        counter = 0
         for t in self.types:
             for c in self.categories:
                 list_1 = self.filter_by_time(g,t+self.s+c)
@@ -150,17 +151,85 @@ class Read_events:
                 if exists(path) == False and length:
                     os.makedirs(path)
                 for x in range (len(list_1)):     
-                    src = self.find(list_1[4][x], 'E:\\')#Source Path
+                    src = self.find(list_1[4][x], self.source)#Source Path
                     dst = path +'/'+list_1[4][x]# Destination path
                     shutil.copy(src, dst)
+                    counter +=1
+                    stdout.write("\r%d Files copied " % counter)
+                    stdout.flush()
+                    sleep(0.01)
                     continue
                     return 0
+   
+class copy_files():
+    
+    def __init__(self, d):
+        self.s = d.s
+        self.year = d.year
+        self.month = d.month
+        self.day = d.day
+        self.path = d.dst
+        self.fit_files_list = Read_events(d).fit_files_list
+        self.find = Read_events(d).find
+        self.source = d.src
+  
+    def copy(self, li,path):
+        counter = 0
+        path2 = path
+        if exists(path2) == False:
+            os.makedirs(path2)   
+        for x in range (len(li)):     
+            src = self.find(li[4][x], self.source)#Source Path
+            dst = path2 +'/'+li[4][x]# Destination path
+            shutil.copy(src, dst)
+            counter +=1
+            stdout.write("\r%d Files copied " % counter)
+            stdout.flush()
+            sleep(0.01)
+            continue   
 
-        
-p = variables(2022,1,1,"E:/CALLISTO/")
+    def yearly(self):
+        path2 = self.path+str(self.year)+self.s+"All Files"
+        li = self.fit_files_list()
+        li = li[li.index.year == self.year]
+        self.copy(li,path2)        
+
+    def monthly(self):
+        path2 = self.path+self.year+self.s+str(self.month)+ self.s+"Data"
+        li = self.fit_files_list()
+        li = li[li.index.year == self.year]
+        li = li[li.index.month == self.month]
+        self.copy(li, path2)
+
+    def specified_date(self):
+        path2 = self.path+str(self.year)+self.s+str(self.month)+ self.s+str(self.day)+self.s+"Data"
+        li = self.fit_files_list()
+        li = li[li.index.year == self.year]
+        li = li[li.index.month == self.month]
+        li = li[li.index.day == self.day]
+        self.copy(li, path2)
+
+p = variables(2022,1,1,"E:\\", "E:/CALLISTO/")
+# copy = copy_files(p)
+# copy.monthly()
+
+
 read_events = Read_events(p)
-read_events.dir_tree()
+read_events.categorize()
  
+
+
+
+
+
+
+
+
+
+
+
+
+
 # class plotting:
 #     def __init__(self,d):
         

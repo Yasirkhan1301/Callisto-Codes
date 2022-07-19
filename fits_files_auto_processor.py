@@ -14,7 +14,7 @@ from sys import stdout
 from time import sleep
 
 class variables:
-    def __init__(self, year, month, day, source, destination):
+    def __init__(self, year, month, day, data_source, data_destination):
         
         self.s = "/"
         self.types = ["I","II","III","IV","V","VI"]
@@ -23,8 +23,8 @@ class variables:
         self.month = month
         self.day = day
         # self.date = self.year+"-"+self.month+"-"+self.day
-        self.dst = destination
-        self.src = source
+        self.dst = data_destination
+        self.src = data_source
         # self.path2 = self.path + "Daily_Overview"+self.s+self.year+self.s+self.day+self.s       
 
 class Read_events:
@@ -161,7 +161,7 @@ class Read_events:
                     continue
                     return 0
    
-class copy_files():
+class copy_files:
     
     def __init__(self, d):
         self.s = d.s
@@ -209,13 +209,20 @@ class copy_files():
         li = li[li.index.day == self.day]
         self.copy(li, path2)
 
+
 p = variables(2022,1,1,"E:\\", "E:/CALLISTO/")
-# copy = copy_files(p)
-# copy.monthly()
+copy = copy_files(p)
+copy.specified_date()
 
 
-read_events = Read_events(p)
-read_events.categorize()
+#Calculate the number of files present in the PC and show the missing data
+
+# class Missing:
+#     def __inti__(self,d):
+        
+    
+# read_events = Read_events(p)
+# read_events.categorize()
  
 
 

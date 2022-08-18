@@ -14,17 +14,17 @@ from sys import stdout
 from time import sleep
 
 class variables:
-    def __init__(self, year, month, day, data_source, data_destination):
+    def __init__(self, **kwargs):
         
         self.s = "/"
         self.types = ["I","II","III","IV","V","VI"]
         self.categories = ["1","2","3"]
-        self.year = year
-        self.month = month
-        self.day = day
+        self.year = kwargs["year"]
+        self.month = kwargs["month"]
+        self.day = kwargs["day"]
         # self.date = self.year+"-"+self.month+"-"+self.day
-        self.dst = data_destination
-        self.src = data_source
+        self.dst = kwargs["dst"]
+        self.src = kwargs["src"]
         # self.path2 = self.path + "Daily_Overview"+self.s+self.year+self.s+self.day+self.s       
 
 class Read_events:
@@ -73,6 +73,7 @@ class Read_events:
         ds = pd.DataFrame(actual)
         d[3],d[4] = ds[0] , fd
         d.drop(d.index[d[1].isnull()], inplace = True)
+        d[5] = pd.to_datetime(d[1]).dt.date
         d[1] = pd.to_datetime(d[1] + d[2])
         d = d.set_index(d[1])
         d.drop_duplicates(subset=[4],inplace = True)
@@ -208,17 +209,37 @@ class copy_files:
         li = li[li.index.month == self.month]
         li = li[li.index.day == self.day]
         self.copy(li, path2)
+        
+    def date_range(self): 
+        per = pd.date_range(start ='1-1-2022', end ='06-01-2022', freq ='D')
+        df = pd.DataFrame()
+        df[1] = per.date
+        df = df.set_index(df[1])
+        li = self.fit_files_list()
+        xf = li[li[5].isin(df.index)]
+        return xf
 
-
-p = variables(2022,1,1,"E:\\", "E:/CALLISTO/")
+args = {
+        "year" : 2022,
+        "month" : 1,
+        "day" : 1,
+        "src" : "E:\\",
+        "dst" : "E:/CALLISTO/"        
+}
+# p = variables(2022,1,1,"E:\\", "E:/CALLISTO/")
+p = variables(**args)
 copy = copy_files(p)
-copy.specified_date()
+c = copy.date_range()
 
 
 #Calculate the number of files present in the PC and show the missing data
 
 # class Missing:
-#     def __inti__(self,d):
+#     def __inti__(self,year):
+        
+        
+        
+        
         
     
 # read_events = Read_events(p)
